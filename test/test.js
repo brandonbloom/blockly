@@ -21,6 +21,11 @@ window_.DOMParser = global.DOMParser = xmldom.DOMParser;
 window_.XMLSerializer = global.XMLSerializer = xmldom.XMLSerializer;
 window_.Blockly = global.Blockly = initBlockly(window_);
 
+var appGlobals = {
+  maze: 'Maze',
+  turtle: 'Turtle'
+};
+
 // Asynchronously test a level in side a virtual browser environment.
 var runLevel = function(app, level, done) {
   require('../build/js/' + app + '/main');
@@ -31,8 +36,8 @@ var runLevel = function(app, level, done) {
     baseUrl: '/', // XXX Doesn't matter
     containerId: 'app',
     onInitialize: function() {
-      // Click the run button!
-      window_.Maze.runButtonClick();
+      // Fire the run button handler!
+      window_[appGlobals[app]].runButtonClick();
     },
     onAttempt: function(report) {
       // Validate successful solution.

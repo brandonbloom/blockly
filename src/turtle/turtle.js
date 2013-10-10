@@ -77,7 +77,6 @@ Turtle.init = function(config) {
     baseUrl: config.baseUrl,
     data: {
       appInstance: 'Turtle',
-      visualization: require('./visualization.html')(),
       appFeedback: require('./appFeedback.html')(),
       controls: require('./controls.html')({baseUrl: config.baseUrl})
     }
@@ -131,11 +130,26 @@ Turtle.init = function(config) {
   // If config.level.startBlocks is passed in, it overrides level.startBlocks
   BlocklyApps.loadBlocks(level.startBlocks);
 
-  // Get the canvases and set their initial contents.
-  Turtle.ctxDisplay = document.getElementById('display').getContext('2d');
-  Turtle.ctxAnswer = document.getElementById('answer').getContext('2d');
-  Turtle.ctxImages = document.getElementById('images').getContext('2d');
-  Turtle.ctxScratch = document.getElementById('scratch').getContext('2d');
+  // Helper for creating canvas elements.
+  var createCanvas = function() {
+    var el = document.createElement("canvas");
+    el.width = 400;
+    el.height = 400;
+    return el;
+  };
+
+  // Create hidden canvases.
+  Turtle.ctxAnswer = createCanvas('answer').getContext('2d');
+  Turtle.ctxImages = createCanvas('images').getContext('2d');
+  Turtle.ctxScratch = createCanvas('scratch').getContext('2d');
+
+  // Create display canvas.
+  var display = createCanvas();
+  display.id = 'display'; // for styles
+  visualization.appendChild(display);
+  Turtle.ctxDisplay = display.getContext('2d');
+
+  // Fill canvases.
   Turtle.drawImages();
   Turtle.drawAnswer();
   BlocklyApps.reset();
@@ -542,13 +556,22 @@ Turtle.checkAnswer = function() {
   var answerImage =
       Turtle.ctxAnswer.getImageData(0, 0, Turtle.WIDTH, Turtle.HEIGHT);
   var len = Math.min(userImage.data.length, answerImage.data.length);
+  var total = 0;
   var delta = 0;
   // Pixels are in RGBA format.  Only check the Alpha bytes.
   for (var i = 3; i < len; i += 4) {
     // Check the Alpha byte.
+    if ((userImage.data[i] !== 0) || (answerImage.data[i] !== 0)) {
+      total++;
+    }
     if ((userImage.data[i] === 0) != (answerImage.data[i] === 0)) {
       delta++;
     }
+  }
+
+  // Sanity check empty canvases for unit tests.
+  if (total === 0) {
+    throw new Error('Blank images');
   }
 
   // Allow some number of pixels to be off, but be stricter
