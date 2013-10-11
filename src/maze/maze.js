@@ -167,12 +167,24 @@ var drawMap = function() {
     svg.appendChild(tile);
   }
 
+  if (skin.grid) {
+    for (y = 0; y < Maze.ROWS; y += 2) {
+      for (x = 0; x < Maze.ROWS; x += 2) {
+        var gridElement = document.createElementNS(Blockly.SVG_NS, 'image');
+        gridElement.setAttributeNS(
+            'http://www.w3.org/1999/xlink', 'xlink:href', skin.grid);
+        gridElement.setAttribute('height', Maze.SQUARE_SIZE * 2);
+        gridElement.setAttribute('width', Maze.SQUARE_SIZE * 2);
+        gridElement.setAttribute('x', x * Maze.SQUARE_SIZE);
+        gridElement.setAttribute('y', y * Maze.SQUARE_SIZE);
+        svg.appendChild(gridElement);
+      }
+    }
+  }
+
   if (skin.graph) {
     // Draw the grid lines.
-    // The grid lines are offset so that the lines pass through the centre of
-    // each square.  A half-pixel offset is also added to as standard SVG
-    // practice to avoid blurriness.
-    var offset = Maze.SQUARE_SIZE / 2 + 0.5;
+    var offset = -0.5;
     for (k = 0; k < Maze.ROWS; k++) {
       var h_line = document.createElementNS(Blockly.SVG_NS, 'line');
       h_line.setAttribute('y1', k * Maze.SQUARE_SIZE + offset);

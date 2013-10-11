@@ -2,13 +2,15 @@
 // tiles: A 250x200 set of 20 map images.
 // goal: A 20x34 goal image.
 // background: An optional 400x450 background image, or false.
+// grid: true for an 2x2 tiled background grid.
 // graph: Colour of optional grid lines, or false.
 // look: Colour of sonar-like look icon.
 
 var CONFIGS = {
 
   astro: {
-    look: '#FFF'
+    look: '#FFF',
+    grid: true
   },
 
   pegman: {
@@ -45,12 +47,13 @@ exports.load = function(baseUrl, id) {
     tiles: root + 'tiles.png',
     goal: root + 'goal.png',
     obstacle: root + 'obstacle.png',
+    background: (config.background !== false ? root + 'background.png' : null),
+    grid: (config.grid ? root + 'grid.png' : null),
     // Sounds
     //TODO: Blockly should accept absolute sound paths.
     win: [path + 'win.mpg', path + 'win.ogg'],
     whack: [path + 'whack.mpg', path + 'whack.ogg'],
     // Settings
-    graph: config.graph,
     look: config.look,
     dirt: function(n) {
       var MAX = 10;
@@ -67,8 +70,5 @@ exports.load = function(baseUrl, id) {
       return root + prefix + 'check.png';
     }
   };
-  if (config.background !== false) {
-    skin.background = root + 'background.png';
-  }
   return skin;
 };
