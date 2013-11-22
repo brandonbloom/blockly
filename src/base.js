@@ -345,7 +345,7 @@ BlocklyApps.onResize = function(gameWidth) {
 
   var parentWidth = parseInt(parentStyle.width, 10);
   var parentHeight = parseInt(parentStyle.height, 10);
-  
+
   var headers = document.getElementById('headers');
   var headersStyle = window.getComputedStyle ?
                        window.getComputedStyle(headers) :
@@ -583,12 +583,13 @@ exports.updateBlockCount = function() {
   } else {
     element.className = "block-counter-default";
   }
+  var text;
 
   // Update number of blocks used.
   if (element) {
     element.innerHTML = '';  // Remove existing children or text.
-    element.appendChild(document.createTextNode(
-        feedback.getNumBlocksUsed() + feedback.getNumGivenBlocks()));
+    text = '' + (feedback.getNumBlocksUsed() + feedback.getNumGivenBlocks());
+    element.appendChild(document.createTextNode(text));
   }
 
   element = document.getElementById('idealBlockNumber');
@@ -596,13 +597,9 @@ exports.updateBlockCount = function() {
   // Update idealBlockNumber
   if (element) {
     element.innerHTML = '';  // Remove existing children or text.
-    element.appendChild(document.createTextNode(
-        feedback.getNumGivenBlocks() + BlocklyApps.IDEAL_BLOCK_NUM));
+    text = (BlocklyApps.IDEAL_BLOCK_NUM === Infinity ?
+            msg.infinity() :
+            BlocklyApps.IDEAL_BLOCK_NUM + feedback.getNumGivenBlocks());
+    element.appendChild(document.createTextNode(text));
   }
-};
-
-exports.getIdealBlockNumberMsg = function() {
-  return BlocklyApps.IDEAL_BLOCK_NUM === Infinity ?
-      msg.infinity() :
-      BlocklyApps.IDEAL_BLOCK_NUM + feedback.getNumGivenBlocks();
 };

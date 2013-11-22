@@ -95,8 +95,6 @@ Turtle.init = function(config) {
       localeDirection: BlocklyApps.localeDirection(),
       visualization: require('./visualization.html')(),
       controls: require('./controls.html')({assetUrl: BlocklyApps.assetUrl}),
-      blockUsed : undefined,
-      idealBlockNumber : undefined,
       blockCounterClass : 'block-counter-default'
     }
   });

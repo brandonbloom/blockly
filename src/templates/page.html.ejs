@@ -66,11 +66,9 @@ var helpArea = function(html) { -%>
     <div id="toolbox-header" class="blockly-header"><span><%= msg.toolboxHeader() %></span></div>
     <div id="workspace-header" class="blockly-header">
       <span id="blockCounter"><%= msg.workspaceHeader() %></span>
-      <div id="blockUsed" class=<%= data.blockCounterClass %>>
-        <%= data.blockUsed %>
-      </div>
+      <div id="blockUsed" class=<%= data.blockCounterClass %>></div>
       <span>&nbsp;/</span>
-      <span id="idealBlockNumber"><%= data.idealBlockNumber %></span>
+      <span id="idealBlockNumber"></span>
     </div>
     <div id="show-code-header" class="blockly-header"><span><%= msg.showCodeHeader() %></span></div>
   </div>

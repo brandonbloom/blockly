@@ -417,8 +417,6 @@ Maze.init = function(config) {
     data: {
       localeDirection: BlocklyApps.localeDirection(),
       visualization: require('./visualization.html')(),
-      blockUsed : undefined,
-      idealBlockNumber : undefined,
       blockCounterClass : 'block-counter-default'
     }
   });
